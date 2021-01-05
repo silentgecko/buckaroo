@@ -8,34 +8,15 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class RequestErrors
 {
-    /**
-     * @var ChannelError
-     */
-    public $ChannelError;
+    public ChannelError $ChannelError;
+    public ServiceError $ServiceError;
+    public ActionError $ActionError;
+    public ParameterError $ParameterError;
+    public CustomParameterError $CustomParameterError;
 
-    /**
-     * @var ServiceError
-     */
-    public $ServiceError;
-
-    /**
-     * @var ActionError
-     */
-    public $ActionError;
-
-    /**
-     * @var ParameterError
-     */
-    public $ParameterError;
-
-    /**
-     * @var CustomParameterError
-     */
-    public $CustomParameterError;
-
-    public function getErrors()
+    public function getErrors() :array
     {
-        $errors = array();
+        $errors = [];
 
         if ($this->ChannelError) {
             $errors[] = $this->ChannelError;

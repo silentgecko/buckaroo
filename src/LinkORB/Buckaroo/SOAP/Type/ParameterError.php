@@ -8,13 +8,6 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class ParameterError extends Error
 {
-    /**
-     * @var string
-     */
-    public $Action;
-
-    /**
-     * @var string
-     */
-    public $Service;
+    public string $Action;
+    public string $Service;
 }

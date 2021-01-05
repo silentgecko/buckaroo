@@ -9,8 +9,8 @@ class Transaction
 
     public $Key;
     public $Invoice;
-	
-    public function __construct( $Key = null, $Invoice = null )
+
+    public function __construct($Key = null, $Invoice = null)
     {
         $this->Key = $Key;
         $this->Invoice = $Invoice;

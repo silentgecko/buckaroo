@@ -8,25 +8,15 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class StatusCode
 {
-    /**
-     * @var int
-     */
-    public $Code;
+    public int $Code;
+    public string $_;
 
-    /**
-     * @var string
-     */
-    public $_;
-
-    public function getCode()
+    public function getCode() :int
     {
         return $this->Code;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText() :string
     {
         return $this->_;
     }

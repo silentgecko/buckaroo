@@ -8,13 +8,6 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class ChannelError extends Error
 {
-    /**
-     * @var string
-     */
-    public $Service;
-
-    /**
-     * @var string
-     */
-    public $Action;
+    public string $Service;
+    public string $Action;
 }

@@ -2,9 +2,10 @@
 
 namespace LinkORB\Buckaroo\Response;
 
-use LinkORB\Buckaroo\Response;
+use ArrayAccess;
+use InvalidArgumentException;
 use LinkORB\Buckaroo\SignatureComposer\SignatureComposer;
-use Sarciszewski\PHPFuture\Security;
+use RuntimeException;
 
 /**
  * PostResponse can be used to verify and read post and push responses from Buckaroo.
@@ -21,28 +22,13 @@ use Sarciszewski\PHPFuture\Security;
  *
  * @author  Joris van de Sande <joris.van.de.sande@freshheads.com>
  */
-class PostResponse implements \ArrayAccess
+class PostResponse implements ArrayAccess
 {
     const SIGNATURE_FIELD = 'BRQ_SIGNATURE';
+    protected array $parameters;
+    protected string $signature;
+    protected array $upperParameters;
 
-    /**
-     * @var array
-     */
-    protected $parameters;
-
-    /**
-     * @var string
-     */
-    protected $signature;
-
-    /**
-     * @var array
-     */
-    protected $upperParameters;
-
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
         $upperParameters = array_change_key_case($parameters, CASE_UPPER);
@@ -54,84 +40,82 @@ class PostResponse implements \ArrayAccess
     }
 
     /**
-     * Returns whether this response is valid.
+     * Extract the sign field
      *
-     * @param SignatureComposer $composer
-     * @return bool
+     * @throws InvalidArgumentException
      */
-    public function isValid(SignatureComposer $composer)
+    protected function getSignature(array $parameters) :string
     {
-        // Constant Time String Comparison @see http://php.net/hash_equals
-        if (!function_exists('hash_equals')) {
-            // Polyfill for PHP < 5.6
-            return Security::hashEquals($composer->compose($this->parameters), $this->signature);
-        } else {
-            return hash_equals($composer->compose($this->parameters), $this->signature);
+        if (!array_key_exists(static::SIGNATURE_FIELD, $parameters) || $parameters[static::SIGNATURE_FIELD] == '') {
+            throw new InvalidArgumentException(
+                sprintf('Sign key (%s) not present in parameters.', static::SIGNATURE_FIELD)
+            );
         }
+
+        return $parameters[static::SIGNATURE_FIELD];
     }
 
     /**
-     * Returns the value for the given key.
-     *
-     * @param string $key
-     * @return string
-     * @throws \InvalidArgumentException
+     * Returns whether this response is valid
      */
-    public function getParameter($key)
+    public function isValid(SignatureComposer $composer) :bool
+    {
+        // Constant Time String Comparison @see http://php.net/hash_equals
+        return hash_equals($composer->compose($this->parameters), $this->signature);
+    }
+
+    /**
+     * Returns whether the parameter exists
+     */
+    public function hasParameter(string $key) :bool
+    {
+        return isset($this->upperParameters[strtoupper($key)]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset) :bool
+    {
+        return isset($this->upperParameters[strtoupper($offset)]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset) :string
+    {
+        return $this->getParameter($offset);
+    }
+
+    /**
+     * Returns the value for the given key
+     * @throws InvalidArgumentException
+     */
+    public function getParameter(string $key) :string
     {
         $key = strtoupper($key);
 
-        if (! isset($this->upperParameters[$key])) {
-            throw new \InvalidArgumentException('Parameter ' . $key . ' does not exist.');
+        if (!isset($this->upperParameters[$key])) {
+            throw new InvalidArgumentException('Parameter ' . $key . ' does not exist.');
         }
 
         return $this->upperParameters[$key];
     }
 
     /**
-     * Returns whether the parameter exists.
-     * @param string $key
-     * @return bool
+     * @inheritDoc
      */
-    public function hasParameter($key)
-    {
-        return isset($this->upperParameters[strtoupper($key)]);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->upperParameters[strtoupper($offset)]);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->getParameter($offset);
-    }
-
     public function offsetSet($offset, $value)
     {
-        throw new \RuntimeException('It is not possible to change the parameters.');
-    }
-
-    public function offsetUnset($offset)
-    {
-        throw new \RuntimeException('It is not possible to change the parameters.');
+        throw new RuntimeException('It is not possible to change the parameters.');
     }
 
     /**
-     * Extract the sign field.
-     *
-     * @param array $parameters
-     * @throws \InvalidArgumentException
-     * @return string
+     * @inheritDoc
      */
-    protected function getSignature(array $parameters)
+    public function offsetUnset($offset)
     {
-        if (! array_key_exists(static::SIGNATURE_FIELD, $parameters) || $parameters[static::SIGNATURE_FIELD] == '') {
-            throw new \InvalidArgumentException(
-                sprintf('Sign key (%s) not present in parameters.', static::SIGNATURE_FIELD)
-            );
-        }
-        return $parameters[static::SIGNATURE_FIELD];
+        throw new RuntimeException('It is not possible to change the parameters.');
     }
 }

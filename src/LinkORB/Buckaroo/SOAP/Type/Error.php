@@ -8,33 +8,20 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 abstract class Error
 {
-    /**
-     * @var string
-     */
-    public $Name;
+    public string $Name;
+    public string $Error;
+    public string $_;
 
-    /**
-     * @var string
-     */
-    public $Error;
-
-    /**
-     * @var string
-     */
-    public $_;
-
-    /**
-     * Returns the error message.
-     *
-     * @return string
-     */
-    public function getMessage()
+    public function __toString() :string
     {
-        return $this->_;
+        return (string)$this->getMessage();
     }
 
-    public function __toString()
+    /**
+     * Returns the error message
+     */
+    public function getMessage() :string
     {
-        return (string) $this->getMessage();
+        return $this->_;
     }
 }

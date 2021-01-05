@@ -10,8 +10,6 @@ interface SignatureComposer
 {
     /**
      * Compose sign string based on Buckaroo response parameters
-     * @param array $parameters
-     * @return string
      */
-    public function compose(array $parameters);
+    public function compose(array $parameters) :string;
 }

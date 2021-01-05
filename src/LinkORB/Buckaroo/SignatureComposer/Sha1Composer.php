@@ -9,30 +9,22 @@ namespace LinkORB\Buckaroo\SignatureComposer;
  */
 class Sha1Composer implements SignatureComposer
 {
-    /**
-     * @var string
-     */
-    protected $secret;
+    protected string $secret;
 
     public function __construct($secret)
     {
         $this->secret = $secret;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compose(array $parameters)
+    public function compose(array $parameters) :string
     {
         return $this->sign($this->sort($parameters));
     }
 
     /**
-     * Calculate the sha1 for the parameter array.
-     * @param array $parameters
-     * @return string
+     * Calculate the sha1 for the parameter array
      */
-    protected function sign(array $parameters)
+    protected function sign(array $parameters) :string
     {
         //turn into string and add the secret key to the end
         $signatureString = '';
@@ -47,11 +39,9 @@ class Sha1Composer implements SignatureComposer
     }
 
     /**
-     * Sort array alphabetically on key.
-     * @param array $parameters
-     * @return array
+     * Sort array alphabetically on key
      */
-    protected function sort(array $parameters)
+    protected function sort(array $parameters) :array
     {
         uksort(
             $parameters,

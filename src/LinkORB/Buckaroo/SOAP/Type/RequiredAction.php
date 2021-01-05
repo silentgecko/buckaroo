@@ -8,11 +8,11 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class RequiredAction
 {
-    public $RedirectURL;
-    public $Type;
-    public $Name;
+    public string $RedirectURL;
+    public string $Type;
+    public string $Name;
 
-    public function isRedirect()
+    public function isRedirect() :bool
     {
         return $this->Type == 'Redirect';
     }

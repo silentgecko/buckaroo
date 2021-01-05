@@ -8,8 +8,5 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class ActionError extends Error
 {
-    /**
-     * @var string
-     */
-    public $Service;
+    public string $Service;
 }

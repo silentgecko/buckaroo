@@ -2,6 +2,8 @@
 
 namespace LinkORB\Buckaroo\Response;
 
+use DateTime;
+
 /**
  * StatusResponse.
  *
@@ -21,100 +23,67 @@ class StatusResponse extends PostResponse
     const CANCELLED_BY_MERCHANT = 891;
     const REJECTED = 690;
 
-    /**
-     * @return string
-     */
-    public function getTransactionKey()
+    public function getTransactionKey() :string
     {
         return $this->getParameter('brq_transactions');
     }
 
-    /**
-     * @return string
-     */
-    public function getPayment()
-    {
-        return $this->getParameter('brq_payment');
-    }
-
-    /**
-     * @return int
-     */
-    public function getStatusCode()
-    {
-        return (int) $this->getParameter('brq_statuscode');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTest()
+    public function isTest() :bool
     {
         return $this->hasParameter('brq_test') && $this->getParameter('brq_test') === 'true';
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getTimestamp()
+    public function getTimestamp() : DateTime
     {
-        return new \DateTime($this->getParameter('brq_timestamp'));
+        return new DateTime($this->getParameter('brq_timestamp'));
     }
 
-    /**
-     * @return string
-     */
-    public function getInvoiceNumber()
+    public function getInvoiceNumber() :string
     {
         return $this->getPayment('brq_invoicenumber');
     }
 
-    /**
-     * @return bool
-     */
-    public function isSuccess()
+    public function getPayment() :string
+    {
+        return $this->getParameter('brq_payment');
+    }
+
+    public function isSuccess() :bool
     {
         return $this->getStatusCode() == static::SUCCESS;
     }
 
-    /**
-     * @return bool
-     */
-    public function isFinal()
+    public function getStatusCode() :int
     {
-        return ! $this->isPending();
+        return (int)$this->getParameter('brq_statuscode');
     }
 
-    /**
-     * @return bool
-     */
-    public function isPending()
+    public function isFinal() :bool
+    {
+        return !$this->isPending();
+    }
+
+    public function isPending() :bool
     {
         return in_array(
             $this->getStatusCode(),
-            array(static::PENDING_INPUT, static::PENDING_PROCESSING, static::AWAITING_CUSTOMER)
+            [static::PENDING_INPUT, static::PENDING_PROCESSING, static::AWAITING_CUSTOMER]
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isCancelled()
+    public function isCancelled() :bool
     {
         return in_array(
             $this->getStatusCode(),
-            array(static::CANCELLED_BY_MERCHANT, static::CANCELLED_BY_USER)
+            [static::CANCELLED_BY_MERCHANT, static::CANCELLED_BY_USER]
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isFailed()
+    public function isFailed() :bool
     {
         return in_array(
             $this->getStatusCode(),
-            array(static::FAILED, static::TECHNICAL_FAILURE, static::VALIDATION_FAILURE)
+            [static::FAILED, static::TECHNICAL_FAILURE, static::VALIDATION_FAILURE]
         );
     }
 }

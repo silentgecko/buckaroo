@@ -2,20 +2,24 @@
 
 namespace LinkORB\Buckaroo;
 
-use LinkORB\Buckaroo;
-use LinkORB\Buckaroo\SOAP;
+use InvalidArgumentException;
+use LinkORB\Buckaroo\SOAP\Body;
+use LinkORB\Buckaroo\SOAP\DigestMethodType;
+use LinkORB\Buckaroo\SOAP\Header;
+use LinkORB\Buckaroo\SOAP\MessageControlBlock;
+use LinkORB\Buckaroo\SOAP\ReferenceType;
+use LinkORB\Buckaroo\SOAP\SecurityType;
+use LinkORB\Buckaroo\SOAP\SignatureType;
+use LinkORB\Buckaroo\SOAP\SignedInfoType;
+use LinkORB\Buckaroo\SOAP\TransformType;
+use SOAPHeader;
 
 class Request
 {
 
-    private $soapClient = null;
-    private $websiteKey = null;
-    private $culture = 'nl-NL';
-    private $testMode = false;
-    private $channel  = 'Web';
-    protected static $defaultSoapOptions = array(
+    protected static array $defaultSoapOptions = [
         'trace' => 1,
-        'classmap' => array(
+        'classmap' => [
             'Body' => 'LinkORB\\Buckaroo\\SOAP\\Type\\Body',
             'Status' => 'LinkORB\\Buckaroo\\SOAP\\Type\\Status',
             'RequiredAction' => 'LinkORB\\Buckaroo\\SOAP\\Type\\RequiredAction',
@@ -27,137 +31,136 @@ class Request
             'RequestErrors' => 'LinkORB\\Buckaroo\\SOAP\\Type\\RequestErrors',
             'StatusCode' => 'LinkORB\\Buckaroo\\SOAP\\Type\\StatusCode',
             'StatusSubCode' => 'LinkORB\\Buckaroo\\SOAP\\Type\\StatusCode',
-        )
-    );
+        ],
+    ];
+    private ?SoapClientWSSEC $soapClient = null;
+    private ?string $websiteKey = null;
+    private string $culture = 'nl-NL';
+    private bool $testMode = false;
+    private string $channel = 'Web';
 
-    public function __construct($websiteKey = null, $testMode = false, array $soapOptions = array())
+    public function __construct(string $websiteKey = null, bool $testMode = false, array $soapOptions = [])
     {
-        
         $this->websiteKey = $websiteKey;
         $this->testMode = $testMode;
 
-		$wsdl_url = "https://checkout.buckaroo.nl/soap/soap.svc?wsdl";
-		$this->soapClient = new SoapClientWSSEC($wsdl_url, array_merge(static::$defaultSoapOptions, $soapOptions));
-	}
+        $wsdl_url = "https://checkout.buckaroo.nl/soap/soap.svc?wsdl";
+        $this->soapClient = new SoapClientWSSEC($wsdl_url, array_merge(static::$defaultSoapOptions, $soapOptions));
+    }
 
-    public function loadPem($filename)
+    public function loadPem(string $filename) :void
     {
         $this->soapClient->loadPem($filename);
     }
 
-    public function setChannel($channel)
+    public function setChannel(string $channel) :void
     {
-	$this->channel = $channel;
+        $this->channel = $channel;
     }
 
-    public function sendRequest($TransactionRequest, $type)
+    public function sendRequest(Body $TransactionRequest, string $type) :array
     {
 
         if (!$this->websiteKey) {
-            throw new \InvalidArgumentException('websiteKey not defined');
+            throw new InvalidArgumentException('websiteKey not defined');
         }
 
         // Envelope and wrapper stuff
-        $Header = new Buckaroo\SOAP\Header();
-        $Header->MessageControlBlock = new Buckaroo\SOAP\MessageControlBlock();
+        $Header = new Header();
+        $Header->MessageControlBlock = new MessageControlBlock();
         $Header->MessageControlBlock->Id = '_control';
         $Header->MessageControlBlock->WebsiteKey = $this->websiteKey;
         $Header->MessageControlBlock->Culture = $this->culture;
 
         $Header->MessageControlBlock->TimeStamp = time();
         $Header->MessageControlBlock->Channel = $this->channel;
-        $Header->Security = new SOAP\SecurityType();
-        $Header->Security->Signature = new SOAP\SignatureType();
-        $Header->Security->Signature->SignedInfo = new SOAP\SignedInfoType();
+        $Header->Security = new SecurityType();
+        $Header->Security->Signature = new SignatureType();
+        $Header->Security->Signature->SignedInfo = new SignedInfoType();
 
-        $Reference = new SOAP\ReferenceType();
+        $Reference = new ReferenceType();
         $Reference->URI = '#_body';
-        $Transform = new SOAP\TransformType();
+        $Transform = new TransformType();
         $Transform->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#';
-        $Reference->Transforms=array($Transform);
+        $Reference->Transforms = [$Transform];
 
-        $Reference->DigestMethod = new SOAP\DigestMethodType();
+        $Reference->DigestMethod = new DigestMethodType();
         $Reference->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1';
         $Reference->DigestValue = '';
 
-        $Transform2 = new SOAP\TransformType();
+        $Transform2 = new TransformType();
         $Transform2->Algorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#';
-        $ReferenceControl = new SOAP\ReferenceType();
+        $ReferenceControl = new ReferenceType();
         $ReferenceControl->URI = '#_control';
-        $ReferenceControl->DigestMethod = new SOAP\DigestMethodType();
+        $ReferenceControl->DigestMethod = new DigestMethodType();
         $ReferenceControl->DigestMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#sha1';
         $ReferenceControl->DigestValue = '';
-        $ReferenceControl->Transforms=array($Transform2);
+        $ReferenceControl->Transforms = [$Transform2];
 
-        $Header->Security->Signature->SignedInfo->Reference = array($Reference,$ReferenceControl);
+        $Header->Security->Signature->SignedInfo->Reference = [$Reference, $ReferenceControl];
         $Header->Security->Signature->SignatureValue = '';
 
-        $soapHeaders[] = new \SOAPHeader('https://checkout.buckaroo.nl/PaymentEngine/', 'MessageControlBlock', $Header->MessageControlBlock);
-        $soapHeaders[] = new \SOAPHeader('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $Header->Security);
+        $soapHeaders[] = new SOAPHeader(
+            'https://checkout.buckaroo.nl/PaymentEngine/',
+            'MessageControlBlock',
+            $Header->MessageControlBlock
+        );
+        $soapHeaders[] = new SOAPHeader(
+            'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd',
+            'Security',
+            $Header->Security
+        );
         $this->soapClient->__setSoapHeaders($soapHeaders);
-        
-		if ($this->testMode) {
-			$this->soapClient->__SetLocation('https://testcheckout.buckaroo.nl/soap/');
-		} else {
-			$this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
-		}
 
-        $return = array();
-		switch($type) {
-			case 'invoiceinfo':
+        if ($this->testMode) {
+            $this->soapClient->__SetLocation('https://testcheckout.buckaroo.nl/soap/');
+        } else {
+            $this->soapClient->__SetLocation('https://checkout.buckaroo.nl/soap/');
+        }
+
+        $return = [];
+        switch ($type) {
+            case 'invoiceinfo':
                 $return['result'] = $this->soapClient->InvoiceInfo($TransactionRequest);
-				break;
-			case 'transaction':
-				$return['result'] = $this->soapClient->TransactionRequest($TransactionRequest);
-				break;
+                break;
+            case 'transaction':
+                $return['result'] = $this->soapClient->TransactionRequest($TransactionRequest);
+                break;
             case 'transactionstatus':
                 $return['result'] = $this->soapClient->TransactionStatus($TransactionRequest);
                 break;
-			case 'refundinfo':
+            case 'refundinfo':
                 $return['result'] = $this->soapClient->RefundInfo($TransactionRequest);
-				break;
-		}
+                break;
+        }
 
-		$return['response'] = $this->soapClient->__getLastResponse();
-		$return['request']  = $this->soapClient->__getLastRequest();
-		return $return;
-	}
+        $return['response'] = $this->soapClient->__getLastResponse();
+        $return['request'] = $this->soapClient->__getLastRequest();
 
-    /**
-     * @param boolean $testMode
-     * @return Request
-     */
-    public function setTestMode($testMode) 
+        return $return;
+    }
+
+    public function getTestMode() :bool
+    {
+        return $this->testMode;
+    }
+
+    public function setTestMode(bool $testMode) :self
     {
         $this->testMode = $testMode;
 
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getTestMode() 
+    public function getCulture() :string
     {
-        return $this->testMode;
+        return $this->culture;
     }
 
-    /**
-     * @param string $culture
-     * @return Request
-     */
-    public function setCulture($culture)
+    public function setCulture(string $culture) :self
     {
         $this->culture = $culture;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCulture() 
-    {
-        return $this->culture;
     }
 }

@@ -8,73 +8,36 @@ namespace LinkORB\Buckaroo\SOAP\Type;
  */
 class Body
 {
-    /**
-     * @var string
-     */
-    public $Key;
-
-    /**
-     * @var Status
-     */
-    public $Status;
-
-    /**
-     * @var RequiredAction
-     */
-    public $RequiredAction;
+    public string $Key;
+    public Status $Status;
+    public RequiredAction $RequiredAction;
 
     /**
      * Order number
-     * @var string
      */
-    public $Invoice;
+    public string $Invoice;
 
     /**
      * Whether this is a test transaction
-     * @var boolean
      */
-    public $IsTest;
-
-    /**
-     * @var string
-     */
-    public $Currency;
-
-    /**
-     * @var float
-     */
-    public $AmountDebit;
+    public bool $IsTest;
+    public string $Currency;
+    public float $AmountDebit;
 
     /**
      * One of: NotSet, Collecting, Processing, Informational
-     * @var string
      */
-    public $MutationType;
+    public string $MutationType;
+    public bool $StartRecurrent;
+    public bool $Recurring;
+    public RequestErrors $RequestErrors;
 
-    /**
-     * @var boolean
-     */
-    public $StartRecurrent;
-
-    /**
-     * @var boolean
-     */
-    public $Recurring;
-
-    /**
-     * @var RequestErrors
-     */
-    public $RequestErrors;
-
-    public function hasRequiredAction()
+    public function hasRequiredAction() :bool
     {
         return $this->RequiredAction !== null;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasErrors()
+    public function hasErrors() :bool
     {
         return $this->RequestErrors !== null;
     }
