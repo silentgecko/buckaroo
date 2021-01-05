@@ -24,7 +24,7 @@ Then, add `linkorb/buckaroo` to your project's `composer.json`:
 ```json
 {
     "require": {
-        "silentgecko/buckaroo": "2.*"
+        "linkorb/buckaroo": "2.*"
     }
 }
 ```
