@@ -1,4 +1,4 @@
-# LinkORB\Buckaroo
+# silentgecko\Buckaroo
 
 API client for Buckaroo BPE 3.0 for PHP >= 7.4. PSR-0 compliant.
 
@@ -24,7 +24,7 @@ Then, add `linkorb/buckaroo` to your project's `composer.json`:
 ```json
 {
     "require": {
-        "linkorb/buckaroo": "2.*"
+        "silentgecko/buckaroo": "2.*"
     }
 }
 ```

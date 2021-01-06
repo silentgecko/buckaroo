@@ -1,12 +1,12 @@
 <?php
 
-namespace LinkORB\Buckaroo;
+namespace silentgecko\Buckaroo;
 
-use LinkORB\Buckaroo\SOAP\Body;
-use LinkORB\Buckaroo\SOAP\IPAddress;
-use LinkORB\Buckaroo\SOAP\RequestParameter;
-use LinkORB\Buckaroo\SOAP\Service;
-use LinkORB\Buckaroo\SOAP\Services;
+use silentgecko\Buckaroo\SOAP\Body;
+use silentgecko\Buckaroo\SOAP\IPAddress;
+use silentgecko\Buckaroo\SOAP\RequestParameter;
+use silentgecko\Buckaroo\SOAP\Service;
+use silentgecko\Buckaroo\SOAP\Services;
 
 class Example
 {
