@@ -19,7 +19,7 @@ This class is designed to work with the following WSDL:
 
 Check out [composer](http://www.getcomposer.org) for details about installing and running composer.
 
-Then, add `linkorb/buckaroo` to your project's `composer.json`:
+Then, add `silentgecko/buckaroo` to your project's `composer.json`:
 
 ```json
 {
@@ -62,10 +62,4 @@ open a new issue report so that we or others may take care of it.
 ## License
 Please check LICENSE.md for full license information
 
-## Brought to you by the LinkORB Engineering team
-
-<img src="http://www.linkorb.com/d/meta/tier1/images/linkorbengineering-logo.png" width="200px" /><br />
-Check out our other projects at [linkorb.com/engineering](http://www.linkorb.com/engineering).
-
-Btw, we're hiring!
 

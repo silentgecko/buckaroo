@@ -27,7 +27,7 @@ class Example
         $TransactionRequest->AmountDebit = 1.34;
         $TransactionRequest->Invoice = 'DNK_PHP_1';
         $TransactionRequest->Description = 'Example description for this request';
-        $TransactionRequest->ReturnURL = 'http://www.linkorb.com/';
+        $TransactionRequest->ReturnURL = 'http://www.wereco.de/';
         $TransactionRequest->StartRecurrent = false;
 
         // Specify which service / action we are calling
