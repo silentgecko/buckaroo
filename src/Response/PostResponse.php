@@ -25,9 +25,12 @@ use silentgecko\Buckaroo\SignatureComposer\SignatureComposer;
 class PostResponse implements ArrayAccess
 {
     const SIGNATURE_FIELD = 'BRQ_SIGNATURE';
-    protected array $parameters;
-    protected string $signature;
-    protected array $upperParameters;
+    /** @var array */
+    protected $parameters;
+    /** @var string */
+    protected $signature;
+    /** @var array */
+    protected $upperParameters;
 
     public function __construct(array $parameters)
     {

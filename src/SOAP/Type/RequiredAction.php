@@ -8,9 +8,12 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class RequiredAction
 {
-    public string $RedirectURL;
-    public string $Type;
-    public string $Name;
+    /** @var string */
+    public $RedirectURL;
+    /** @var string */
+    public $Type;
+    /** @var string */
+    public $Name;
 
     public function isRedirect() :bool
     {

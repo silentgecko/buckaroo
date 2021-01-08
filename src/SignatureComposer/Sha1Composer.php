@@ -9,7 +9,8 @@ namespace silentgecko\Buckaroo\SignatureComposer;
  */
 class Sha1Composer implements SignatureComposer
 {
-    protected string $secret;
+    /** @var string */
+    protected $secret;
 
     public function __construct($secret)
     {

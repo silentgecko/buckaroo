@@ -8,6 +8,8 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class ChannelError extends Error
 {
-    public string $Service;
-    public string $Action;
+    /** @var string */
+    public $Service;
+    /** @var string */
+    public $Action;
 }

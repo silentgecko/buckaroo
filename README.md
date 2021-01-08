@@ -1,6 +1,6 @@
 # silentgecko\Buckaroo
 
-API client for Buckaroo BPE 3.0 for PHP >= 7.4. PSR-0 compliant.
+API client for Buckaroo BPE 3.0 for PHP >= 7.2. PSR-4 compliant.
 
 ## WSDL
 
@@ -24,7 +24,7 @@ Then, add `silentgecko/buckaroo` to your project's `composer.json`:
 ```json
 {
     "require": {
-        "silentgecko/buckaroo": "2.*"
+        "silentgecko/buckaroo": "^1.10.0"
     }
 }
 ```

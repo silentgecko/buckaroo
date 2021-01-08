@@ -8,5 +8,6 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class ActionError extends Error
 {
-    public string $Service;
+    /** @var string */
+    public $Service;
 }

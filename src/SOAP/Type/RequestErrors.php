@@ -8,11 +8,16 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class RequestErrors
 {
-    public ChannelError $ChannelError;
-    public ServiceError $ServiceError;
-    public ActionError $ActionError;
-    public ParameterError $ParameterError;
-    public CustomParameterError $CustomParameterError;
+    /** @var ChannelError */
+    public $ChannelError;
+    /** @var ServiceError */
+    public $ServiceError;
+    /** @var ActionError */
+    public $ActionError;
+    /** @var ParameterError */
+    public $ParameterError;
+    /** @var CustomParameterError */
+    public $CustomParameterError;
 
     public function getErrors() :array
     {

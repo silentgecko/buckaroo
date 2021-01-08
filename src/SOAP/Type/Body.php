@@ -8,29 +8,40 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class Body
 {
-    public string $Key;
-    public Status $Status;
-    public RequiredAction $RequiredAction;
+    /** @var string */
+    public $Key;
+    /** @var Status */
+    public $Status;
+    /** @var RequiredAction */
+    public $RequiredAction;
 
     /**
      * Order number
+     * @var string
      */
-    public string $Invoice;
+    public $Invoice;
 
     /**
      * Whether this is a test transaction
+     * @var bool
      */
-    public bool $IsTest;
-    public string $Currency;
-    public float $AmountDebit;
+    public $IsTest;
+    /** @var string */
+    public $Currency;
+    /** @var float */
+    public $AmountDebit;
 
     /**
      * One of: NotSet, Collecting, Processing, Informational
+     * @var string
      */
-    public string $MutationType;
-    public bool $StartRecurrent;
-    public bool $Recurring;
-    public RequestErrors $RequestErrors;
+    public $MutationType;
+    /** @var bool */
+    public $StartRecurrent;
+    /** @var bool */
+    public $Recurring;
+    /** @var RequestErrors */
+    public $RequestErrors;
 
     public function hasRequiredAction() :bool
     {

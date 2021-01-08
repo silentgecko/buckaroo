@@ -16,8 +16,8 @@ use SOAPHeader;
 
 class Request
 {
-
-    protected static array $defaultSoapOptions = [
+    /** @var array */
+    protected static $defaultSoapOptions = [
         'trace' => 1,
         'classmap' => [
             'Body' => 'silentgecko\\Buckaroo\\SOAP\\Type\\Body',
@@ -33,11 +33,16 @@ class Request
             'StatusSubCode' => 'silentgecko\\Buckaroo\\SOAP\\Type\\StatusCode',
         ],
     ];
-    private ?SoapClientWSSEC $soapClient = null;
-    private ?string $websiteKey = null;
-    private string $culture = 'nl-NL';
-    private bool $testMode = false;
-    private string $channel = 'Web';
+    /** @var SoapClientWSSEC|null */
+    private $soapClient = null;
+    /** @var string|null */
+    private $websiteKey = null;
+    /** @var string */
+    private $culture = 'nl-NL';
+    /** @var bool */
+    private $testMode = false;
+    /** @var string */
+    private $channel = 'Web';
 
     public function __construct(string $websiteKey = null, bool $testMode = false, array $soapOptions = [])
     {

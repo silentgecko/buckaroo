@@ -8,6 +8,8 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class ParameterError extends Error
 {
-    public string $Action;
-    public string $Service;
+    /** @var string */
+    public $Action;
+    /** @var string */
+    public $Service;
 }

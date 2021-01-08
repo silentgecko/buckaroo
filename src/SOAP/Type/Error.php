@@ -8,9 +8,12 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 abstract class Error
 {
-    public string $Name;
-    public string $Error;
-    public string $_;
+    /** @var string */
+    public $Name;
+    /** @var string */
+    public $Error;
+    /** @var string */
+    public $_;
 
     public function __toString() :string
     {

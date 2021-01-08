@@ -8,8 +8,10 @@ namespace silentgecko\Buckaroo\SOAP\Type;
  */
 class StatusCode
 {
-    public int $Code;
-    public string $_;
+    /** @var int */
+    public $Code;
+    /** @var string */
+    public $_;
 
     public function getCode() :int
     {
