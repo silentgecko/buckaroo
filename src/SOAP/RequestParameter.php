@@ -4,7 +4,9 @@ namespace silentgecko\Buckaroo\SOAP;
 
 class RequestParameter
 {
+    // phpcs:disable
     public $_;
+    // phpcs:enable
     public $Name;
     public $Group;
 

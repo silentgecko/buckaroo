@@ -4,7 +4,9 @@ namespace silentgecko\Buckaroo\SOAP;
 
 class AdditionalParameter
 {
+    // phpcs:disable
     public $_;
+    // phpcs:enable
     public $Name;
 
     public function __construct($Name, $Value)

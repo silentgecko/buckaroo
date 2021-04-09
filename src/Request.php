@@ -48,17 +48,17 @@ class Request
         $this->soapClient = new SoapClientWSSEC($wsdl_url, array_merge(static::$defaultSoapOptions, $soapOptions));
     }
 
-    public function loadPem(string $filename) :void
+    public function loadPem(string $filename): void
     {
         $this->soapClient->loadPem($filename);
     }
 
-    public function setChannel(string $channel) :void
+    public function setChannel(string $channel): void
     {
         $this->channel = $channel;
     }
 
-    public function sendRequest(Body $TransactionRequest, string $type) :array
+    public function sendRequest(Body $TransactionRequest, string $type): array
     {
 
         if (!$this->websiteKey) {
@@ -140,24 +140,24 @@ class Request
         return $return;
     }
 
-    public function getTestMode() :bool
+    public function getTestMode(): bool
     {
         return $this->testMode;
     }
 
-    public function setTestMode(bool $testMode) :self
+    public function setTestMode(bool $testMode): self
     {
         $this->testMode = $testMode;
 
         return $this;
     }
 
-    public function getCulture() :string
+    public function getCulture(): string
     {
         return $this->culture;
     }
 
-    public function setCulture(string $culture) :self
+    public function setCulture(string $culture): self
     {
         $this->culture = $culture;
 

@@ -6,4 +6,3 @@ class CanonicalizationMethodType
 {
     public $Algorithm;
 }
-

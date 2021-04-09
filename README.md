@@ -1,4 +1,5 @@
 # silentgecko\Buckaroo
+[![Testing sepa](https://github.com/silentgecko/buckaroo/actions/workflows/php.yml/badge.svg)](https://github.com/silentgecko/buckaroo/actions/workflows/php.yml)
 
 API client for Buckaroo BPE 3.0 for PHP >= 7.4. PSR-0 compliant.
 
@@ -14,6 +15,7 @@ This class is designed to work with the following WSDL:
 * Supports the TransactionRequests action
 * Handles SOAP WSSEC, SSL thumbprints and signatures using PEM keys
 * Stand-alone library, no external dependencies
+* PHP 7.4 + PHP 8.0 compatible
 
 ## Installing
 

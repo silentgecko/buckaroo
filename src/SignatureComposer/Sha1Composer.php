@@ -16,7 +16,7 @@ class Sha1Composer implements SignatureComposer
         $this->secret = $secret;
     }
 
-    public function compose(array $parameters) :string
+    public function compose(array $parameters): string
     {
         return $this->sign($this->sort($parameters));
     }
@@ -24,7 +24,7 @@ class Sha1Composer implements SignatureComposer
     /**
      * Calculate the sha1 for the parameter array
      */
-    protected function sign(array $parameters) :string
+    protected function sign(array $parameters): string
     {
         //turn into string and add the secret key to the end
         $signatureString = '';
@@ -41,7 +41,7 @@ class Sha1Composer implements SignatureComposer
     /**
      * Sort array alphabetically on key
      */
-    protected function sort(array $parameters) :array
+    protected function sort(array $parameters): array
     {
         uksort(
             $parameters,

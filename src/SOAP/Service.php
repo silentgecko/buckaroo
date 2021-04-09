@@ -16,4 +16,3 @@ class Service
         $this->Version = $Version;
     }
 }
-

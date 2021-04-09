@@ -24,7 +24,7 @@ use silentgecko\Buckaroo\SignatureComposer\SignatureComposer;
  */
 class PostResponse implements ArrayAccess
 {
-    const SIGNATURE_FIELD = 'BRQ_SIGNATURE';
+    protected const SIGNATURE_FIELD = 'BRQ_SIGNATURE';
     protected array $parameters;
     protected string $signature;
     protected array $upperParameters;
@@ -44,7 +44,7 @@ class PostResponse implements ArrayAccess
      *
      * @throws InvalidArgumentException
      */
-    protected function getSignature(array $parameters) :string
+    protected function getSignature(array $parameters): string
     {
         if (!array_key_exists(static::SIGNATURE_FIELD, $parameters) || $parameters[static::SIGNATURE_FIELD] == '') {
             throw new InvalidArgumentException(
@@ -58,7 +58,7 @@ class PostResponse implements ArrayAccess
     /**
      * Returns whether this response is valid
      */
-    public function isValid(SignatureComposer $composer) :bool
+    public function isValid(SignatureComposer $composer): bool
     {
         // Constant Time String Comparison @see http://php.net/hash_equals
         return hash_equals($composer->compose($this->parameters), $this->signature);
@@ -67,7 +67,7 @@ class PostResponse implements ArrayAccess
     /**
      * Returns whether the parameter exists
      */
-    public function hasParameter(string $key) :bool
+    public function hasParameter(string $key): bool
     {
         return isset($this->upperParameters[strtoupper($key)]);
     }
@@ -75,7 +75,7 @@ class PostResponse implements ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset) :bool
+    public function offsetExists($offset): bool
     {
         return isset($this->upperParameters[strtoupper($offset)]);
     }
@@ -83,16 +83,17 @@ class PostResponse implements ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset) :string
+    public function offsetGet($offset): string
     {
         return $this->getParameter($offset);
     }
 
     /**
      * Returns the value for the given key
+     *
      * @throws InvalidArgumentException
      */
-    public function getParameter(string $key) :string
+    public function getParameter(string $key): string
     {
         $key = strtoupper($key);
 
