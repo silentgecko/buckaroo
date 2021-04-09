@@ -4,6 +4,7 @@ namespace silentgecko\Buckaroo\SOAP\Type;
 
 /**
  * Body
+ *
  * @author  Joris van de Sande <joris.van.de.sande@freshheads.com>
  */
 class Body
@@ -32,12 +33,12 @@ class Body
     public bool $Recurring;
     public RequestErrors $RequestErrors;
 
-    public function hasRequiredAction() :bool
+    public function hasRequiredAction(): bool
     {
         return $this->RequiredAction !== null;
     }
 
-    public function hasErrors() :bool
+    public function hasErrors(): bool
     {
         return $this->RequestErrors !== null;
     }

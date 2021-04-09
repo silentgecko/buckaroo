@@ -39,8 +39,10 @@ class SoapClientWSSEC extends SoapClient
         return parent::__doRequest($domDOC->saveXML($domDOC->documentElement), $location, $action, $version, $one_way);
     }
 
-    private function SignDomDocument(DOMDocument $domDocument) :void
+    // phpcs:disable
+    private function SignDomDocument(DOMDocument $domDocument): void
     {
+        // phpcs:enable
         //create xPath
         $xPath = new DOMXPath($domDocument);
 
@@ -119,8 +121,10 @@ class SoapClientWSSEC extends SoapClient
     /**
      * Calculate digest value (sha1 hash)
      */
-    private function CalculateDigestValue(string $input) :string
+    // phpcs:disable
+    private function CalculateDigestValue(string $input): string
     {
+        // phpcs:enable
         $digValueControl = base64_encode(pack("H*", sha1($input)));
 
         return $digValueControl;
@@ -128,18 +132,23 @@ class SoapClientWSSEC extends SoapClient
 
     /**
      * Canonicalize nodeset
+     *
      * @return string|false on error
      */
+    // phpcs:disable
     private function GetCanonical(DOMNode $Object)
     {
+        // phpcs:enable
         return $Object->C14N(true, false);
     }
 
     /**
      * Get nodeset based on xpath and ID
      */
-    private function GetReference(string $id, DOMXPath $xPath) :?DOMNode
+    // phpcs:disable
+    private function GetReference(string $id, DOMXPath $xPath): ?DOMNode
     {
+        // phpcs:enable
         $query = '//*[@Id="' . $id . '"]';
         $nodeset = $xPath->query($query);
 
@@ -149,8 +158,10 @@ class SoapClientWSSEC extends SoapClient
     /**
      * @param mixed $fullcert
      */
-    private function sha1_thumbprint($fullcert) :string
+    // phpcs:disable
+    private function sha1_thumbprint($fullcert): string
     {
+        // phpcs:enable
         // First, strip out only the right section
         $result = openssl_x509_export($fullcert, $pem);
 
@@ -160,10 +171,11 @@ class SoapClientWSSEC extends SoapClient
         $pem = trim($pem);
         $pem = str_replace(["\n\r", "\n", "\r"], '', $pem);
         $bin = base64_decode($pem);
+
         return sha1($bin);
     }
 
-    public function loadPem(string $pemfilename) :void
+    public function loadPem(string $pemfilename): void
     {
         if (!file_exists($pemfilename)) {
             throw new InvalidArgumentException('PEM file does not exist');
@@ -173,4 +185,3 @@ class SoapClientWSSEC extends SoapClient
         fclose($fp);
     }
 }
-

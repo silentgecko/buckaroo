@@ -4,6 +4,7 @@ namespace silentgecko\Buckaroo\SOAP\Type;
 
 /**
  * Status
+ *
  * @author  Joris van de Sande <joris.van.de.sande@freshheads.com>
  */
 class Status

@@ -11,4 +11,3 @@ class Invoice
         $this->Number = $Number;
     }
 }
-

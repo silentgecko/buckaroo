@@ -11,4 +11,3 @@ class RefundInfo
         $this->TransactionKey = $Transactionkey;
     }
 }
-

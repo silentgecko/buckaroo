@@ -4,6 +4,7 @@ namespace silentgecko\Buckaroo\SOAP\Type;
 
 /**
  * RequestErrors
+ *
  * @author  Joris van de Sande <joris.van.de.sande@freshheads.com>
  */
 class RequestErrors
@@ -14,7 +15,7 @@ class RequestErrors
     public ParameterError $ParameterError;
     public CustomParameterError $CustomParameterError;
 
-    public function getErrors() :array
+    public function getErrors(): array
     {
         $errors = [];
 

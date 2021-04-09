@@ -6,14 +6,3 @@ class SecurityType
 {
     public $Signature;
 }
-
-
-
-
-
-
-
-
-
-
-
